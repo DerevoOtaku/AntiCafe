@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="AntiCafeProfitCalculator:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/AntiCafeProfitCalculator_jar</output-path>
+    <root id="archive" name="AntiCafeProfitCalculator.jar">
+      <element id="module-output" name="AntiCafeProfitCalculator" />
+    </root>
+  </artifact>
+</component>
