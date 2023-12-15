@@ -9,6 +9,7 @@ public class AntiCafeProfitCalculator {
     private static int allTime;
     //private static int[] sittingTimes = new int[10000];
     private static int costPerSecond;
+    private static String check;
     private static int[] earnList = new int[10];
     private static int[] ammountOfGuestsForTable = new int[10];
     private static long startTime;
@@ -24,9 +25,9 @@ public class AntiCafeProfitCalculator {
         Scanner scanner = new Scanner(System.in);
         System.out.println("==========ANTICAFE MANAGER==========");
         System.out.print("Введите стоимость аренды за минуту: ");
-        costPerSecond = scanner.nextInt();
+        costPerSecond = CheckScan(scanner);
         System.out.print("Введите, за сколько секунд условно будет проходить 1 минута: ");
-        timeUnitInSeconds = scanner.nextInt();
+        timeUnitInSeconds = CheckScan(scanner);
         startTime = Instant.now().getEpochSecond();
 
         while (true) {
@@ -42,7 +43,7 @@ public class AntiCafeProfitCalculator {
             System.out.println("9 - Показать самый прибыльный стол за день");
             System.out.println("10 - Выйти из программы");
             System.out.print("Выберите действие: ");
-            int choice = scanner.nextInt();
+            int choice = CheckScan(scanner);
             System.out.println("");
 
             switch (choice) {
@@ -84,7 +85,7 @@ public class AntiCafeProfitCalculator {
 
     private static void addGuestsToTable(Scanner scanner) {
         System.out.print("Введите номер стола: ");
-        int tableNumber = scanner.nextInt();
+        int tableNumber = CheckScan(scanner);
         if (tableOccupancy.containsKey(tableNumber)) {
             System.out.println("Стол уже занят.");
         } else if(tableNumber < 11 && tableNumber > 0) {
@@ -97,12 +98,11 @@ public class AntiCafeProfitCalculator {
 
     private static void removeGuestsFromTable(Scanner scanner) {
         System.out.print("Введите номер стола: ");
-        int tableNumber = scanner.nextInt();
+        int tableNumber = CheckScan(scanner);
         if(tableNumber < 11 && tableNumber > 0) {
             if (tableOccupancy.containsKey(tableNumber)) {
                 long timeSpent = Instant.now().getEpochSecond() - tableOccupancy.get(tableNumber);
                 totalEarnings += (timeSpent / timeUnitInSeconds) * costPerSecond;
-                //sittingTimes[wasGuests] = (int) (timeSpent / timeUnitInSeconds);
                 allTime += (timeSpent / timeUnitInSeconds);
                 wasGuests += 1;
                 earnList[tableNumber - 1] += (timeSpent / timeUnitInSeconds) * costPerSecond;
@@ -124,7 +124,6 @@ public class AntiCafeProfitCalculator {
                 System.out.println("Стол номер " + tableNumber + " - к оплате " + payment);
                 System.out.println("Стол номер " + tableNumber + " - время за столом " + (int) (timeSpent / timeUnitInSeconds) + " минут(ы)");
             }
-            //  showTotalPaymentForOccupiedTables();
         }
     }
 
@@ -177,5 +176,15 @@ public class AntiCafeProfitCalculator {
             }
             System.out.println("Самый популярный стол - " + (maxG + 1) + ", его занимали " + ammountOfGuestsForTable[maxG] + " раз(а)");
         }else  System.out.println("Ещё ни один гость не заходил сегодня");
+    }
+    private static int CheckScan(Scanner scanner){
+        var result = new String();
+        result = scanner.nextLine();
+        while (!result.matches("[1-9][0-9]*")){
+            System.out.println("Некорректный Ввод!");
+            System.out.print("Введите число повторно: ");
+            result = scanner.nextLine();
+        }
+        return Integer.parseInt(result);
     }
 }
